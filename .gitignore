@@ -4,3 +4,9 @@ venv
 .idea
 .vscode
 Untitled.ipynb
+
+
+# Added by cargo
+
+/target
+Cargo.lock
