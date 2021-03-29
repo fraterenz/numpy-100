@@ -17,5 +17,5 @@ This work is licensed under the MIT license.
 [![DOI](https://zenodo.org/badge/10173/rougier/numpy-100.svg)](https://zenodo.org/badge/latestdoi/10173/rougier/numpy-100)
 
 ## TODO
-**rust**: from ex10
-**numpy:** from ex17
+- **rust**: from ex10
+- **numpy:** from ex17
