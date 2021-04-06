@@ -27,6 +27,10 @@ fn ex9() -> Array::<f32, Ix2> {
     Array::range(1., 10., 1.).into_shape((3,3)).unwrap()
 }
 
+fn ex10() -> Array::<f32, Ix2> {
+    Array::eye(3)
+}
+
 fn ex11() -> Array::<f32, Ix2> {
     // rust cannot create arbitrary shaped arrays, need to know the size at compile time
     Array::eye(3)
