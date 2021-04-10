@@ -27,13 +27,18 @@ fn ex9() -> Array::<f32, Ix2> {
     Array::range(1., 10., 1.).into_shape((3,3)).unwrap()
 }
 
-fn ex10() -> Array::<f32, Ix2> {
-    Array::eye(3)
-}
-
 fn ex11() -> Array::<f32, Ix2> {
     // rust cannot create arbitrary shaped arrays, need to know the size at compile time
     Array::eye(3)
+}
+
+fn ex42(a: ArrayView2<f32>, b: &Array2<f32>) -> bool {
+    a.abs_diff_eq(b, 0.1)
+}
+
+fn ex47(a: Array<f32, Ix1>, b: Array<f32, Ix1>) -> Array2<f32> {
+    let c = Array2::<f32>::default((2, 2));
+    todo!()
 }
 
 #[cfg(test)]
@@ -82,5 +87,24 @@ mod tests {
                 [0., 1., 0.],
                 [0., 0., 1.]
             ])
+    }
+
+    #[test]
+    fn test_ex42() {
+        let a = array![[1.1, 1.111], [2.1, 2.111]];
+        let mut b = array![[1.1, 1.112], [2.1, 2.111]];
+        let ans = ex42(a.view(), &b);
+        assert_eq!(ans, true);
+
+        b[[0, 1]] = 1.22;
+        let ans = ex42(a.view(), &b);
+        assert_eq!(ans, false);
+    }
+
+    #[test]
+    fn test_ex47() {
+        let a: Array1<f32> = arr1(&[3., 2.]);
+        let b: Array1<f32> = arr1(&[1., 0.]);
+        // assert_eq!(ex47(a.view(), b), arr2(&[[0.5, 0.33], [1., 0.5]]));
     }
 }
