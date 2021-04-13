@@ -1,6 +1,6 @@
 // from https://github.com/fraterenz/numpy-100/blob/master/100_Numpy_exercises.md
 #![allow(dead_code)]
-use ndarray::prelude::*;
+use ndarray::{Data, prelude::*};
 
 fn ex3() -> Array1<u32> {
     // array![] cannot default with length I think
@@ -32,14 +32,25 @@ fn ex11() -> Array::<f32, Ix2> {
     Array::eye(3)
 }
 
-fn ex42(a: ArrayView2<f32>, b: &Array2<f32>) -> bool {
+// fn ex42(a: ArrayView2<f32>, b: &Array2<f32>) -> bool {
+//     a.abs_diff_eq(b, 0.1)
+// }
+
+// from https://www.reddit.com/r/rust/comments/mo4s8e/difference_between_reference_and_view_in_ndarray/
+// abs_diff_eq is defined for ArrayBase, not for ArrayView... How does rust figure that out? If you
+// pass a reference rust will automatically dereference to find the correct method, which is
+// associated to ArrayBase and not &ArrayBase! https://doc.rust-lang.org/book/ch05-03-method-syntax.html#wheres-the---operator
+fn ex42<S1, S2>(a: &ArrayBase<S1, Ix2>, b: &ArrayBase<S2, Ix2>) -> bool where
+    S1: Data<Elem = f32>,
+    S2: Data<Elem = f32>
+{
     a.abs_diff_eq(b, 0.1)
 }
 
-fn ex47(a: Array<f32, Ix1>, b: Array<f32, Ix1>) -> Array2<f32> {
-    let c = Array2::<f32>::default((2, 2));
-    todo!()
-}
+// fn ex47(a: Array<f32, Ix1>, b: Array<f32, Ix1>) -> Array2<f32> {
+//     let c = Array2::<f32>::default((2, 2));
+//     todo!()
+// }
 
 #[cfg(test)]
 mod tests {
@@ -93,11 +104,11 @@ mod tests {
     fn test_ex42() {
         let a = array![[1.1, 1.111], [2.1, 2.111]];
         let mut b = array![[1.1, 1.112], [2.1, 2.111]];
-        let ans = ex42(a.view(), &b);
+        let ans = ex42(&a.view(), &b.view());
         assert_eq!(ans, true);
 
         b[[0, 1]] = 1.22;
-        let ans = ex42(a.view(), &b);
+        let ans = ex42(&a.view(), &b.view());
         assert_eq!(ans, false);
     }
 
