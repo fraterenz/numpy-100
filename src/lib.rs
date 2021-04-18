@@ -104,11 +104,12 @@ mod tests {
     fn test_ex42() {
         let a = array![[1.1, 1.111], [2.1, 2.111]];
         let mut b = array![[1.1, 1.112], [2.1, 2.111]];
-        let ans = ex42(&a.view(), &b.view());
+        // can either use a view or a reference
+        let ans = ex42(&a, &b.view());
         assert_eq!(ans, true);
 
         b[[0, 1]] = 1.22;
-        let ans = ex42(&a.view(), &b.view());
+        let ans = ex42(&a.view(), &b);
         assert_eq!(ans, false);
     }
 
